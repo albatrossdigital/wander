@@ -2,61 +2,62 @@
 
 /* Controllers */
 
+var ModalInstanceCtrl = function ($scope, $modalInstance, current) {
+
+  //if(!current) {
+    //current = "No content yet";
+  //}
+  $scope.current = current;
+
+  $scope.getContent = function(dataString) {
+    var tempData = angular.fromJson(dataString);
+    return tempData.data;
+  };
+
+  $scope.ok = function () {
+    $modalInstance.close();
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+};
+
 angular.module('myApp.controllers', [])
    .controller('HomeCtrl', ['$scope', 'syncData', function($scope, syncData) {
       syncData('syncedValue').$bind($scope, 'syncedValue');
    }])
 
 
+  .controller('ModalDemoCtrl', ['$scope', '$modal', '$log', 'syncData',
+    function($scope, $modal, $log, syncData) {
+      $scope.current = syncData('content', 1);
 
+      $scope.open = function () {
 
+        var modalInstance = $modal.open({
+          templateUrl: 'myModalContent.html',
+            controller: ModalInstanceCtrl,
+            resolve: {
+              current: function () {
+                return $scope.current;
+              }
+            }
+        });
 
-
-   .controller('ModalDemoCtrl', ['$scope', '$modal', function($scope, $modal, $log) {
-     $scope.items = ['item1', 'item2', 'item3'];
-
-     $scope.open = function () {
-
-       var modalInstance = $modal.open({
-         //templateUrl: 'myModalContent.html',
-         //controller: ModalInstanceCtrl,
-         //resolve: {
-         //  items: function () {
-         //    return $scope.items;
-         //  }
-         //}
-       });
-
-       modalInstance.result.then(function (selectedItem) {
-         $scope.selected = selectedItem;
-       }, function () {
-         $log.info('Modal dismissed at: ' + new Date());
-       });
-     };
-   }])
-
-   /*.controller('ModalInstanceCtrl', ['$scope', '$modalInstance', 'items', function($scope, $modalInstance, items) {
-     $scope.items = items;
-     $scope.selected = {
-       item: $scope.items[0]
-     };
-
-     $scope.ok = function () {
-       $modalInstance.close($scope.selected.item);
-     };
-
-     $scope.cancel = function () {
-       $modalInstance.dismiss('cancel');
-     };
-   }])*/
-
-
-
-
-
-
-
-
+        modalInstance.result.then(function () {
+          //$scope.selected = selectedItem;
+          $(function() {
+            SirTrevor.onBeforeSubmit();
+            var newText = SirTrevor.instances[0].$el.val();
+            $scope.current.$add(newText);
+          });
+        }, function () {
+          $log.info('Modal dismissed at: ' + new Date());
+        });
+      };
+    }
+  ])
 
   .controller('ChatCtrl', ['$scope', 'syncData', function($scope, syncData) {
       $scope.newMessage = null;
@@ -73,6 +74,7 @@ angular.module('myApp.controllers', [])
          }
       };
    }])
+
 
    .controller('LoginCtrl', ['$scope', 'loginService', '$location', function($scope, loginService, $location) {
       $scope.email = null;

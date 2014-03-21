@@ -1,0 +1,6 @@
+{
+  "name": "Wander",
+  "dependencies": {
+    "sir-trevor-js": "0.3.2"
+  }
+}

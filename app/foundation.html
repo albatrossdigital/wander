@@ -7,6 +7,8 @@
 
     <link href="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.0.2/css/foundation.min.css" rel="stylesheet"/>
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="../components/sir-trevor-js/sir-trevor-icons.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="../components/sir-trevor-js/sir-trevor.css" type="text/css" media="screen" title="no title" charset="utf-8">
 
   </head>
   <body ng-cloak-auth class="hide">
@@ -37,6 +39,22 @@
 
       <div class="large-3 columns">
         <div class="panel">
+          <script type="text/ng-template" id="myModalContent.html">
+            <h3>Old Content</h3>
+            <div ng-show="current" class="content">
+              <div ng-repeat="content in current | orderByPriority | reverse">
+                <div ng-init="dataContent = getContent(content)">
+                  <p ng-repeat="data in dataContent">
+                    {{data.data[data.type]}}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <h3>Create New Content</h3>
+            <form sir-trevor-form></form>
+            <button class="button" ng-click="ok()">OK</button>
+            <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
+          </script>
           <div ng-controller="ModalDemoCtrl">
             <button class="button" ng-click="open()">Open me!</button>
             <div ng-show="selected">Selection from a modal: {{ selected }}</div>
@@ -52,18 +70,12 @@
     </div>
 
 
-    <script type="text/ng-template" id="myModalContent.html">
-      <h3>I a modal!</h3>
-      <ul>
-        <li ng-repeat="item in items">
-          <a ng-click="selected.item = item">{{ item }}</a>
-        </li>
-      </ul>
-      <p>Selected: <b>{{ selected.item }}</b></p>
-      <button class="button" ng-click="ok()">OK</button>
-      <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
-    </script>
-    
+    <script src="../components/jquery/jquery.js"></script>
+    <script src="../components/underscore/underscore.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../components/Eventable/eventable.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../components/sir-trevor-js/sir-trevor.js" type="text/javascript" charset="utf-8"></script>
+
+
     <script src="https://cdn.firebase.com/v0/firebase.js"></script>
     <script src="https://cdn.firebase.com/v0/firebase-simple-login.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.js"></script>
